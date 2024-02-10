@@ -36,6 +36,11 @@ git clone https://github.com/volkovartem77/binlead_wss.git
 cd binlead_wss
 ```
 
+### Create Docker network   
+```
+docker network create mynetwork
+```
+
 ### Build the Docker image
 ```
 docker build -t websocket-server .
@@ -43,6 +48,5 @@ docker build -t websocket-server .
 
 ### Run the Docker container
 ```
-docker network create mynetwork
 docker run --network mynetwork -d -p 80:8080 websocket-server
 ```

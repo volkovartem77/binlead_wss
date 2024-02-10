@@ -20,13 +20,13 @@ apt-cache policy docker-ce
 sudo apt install docker-ce
 sudo systemctl status docker
 ```
-Redis
-```
-docker run --name redis-server --network mynetwork -d redis
-```
 Create Docker network
 ```
 docker network create mynetwork
+```
+Redis
+```
+docker run --name redis-server --network mynetwork -d -p 6379:6379 redis
 ```
 NATS
 ```

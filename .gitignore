@@ -58,7 +58,6 @@ build/
 
 # Go build
 /go-build
-/go.sum
 
 # Go Land IDE
 

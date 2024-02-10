@@ -27,6 +27,7 @@ chown redis:redis /var/lib/redis
 ```
 NATS
 ```
+docker network create mynetwork
 sudo docker run --network mynetwork -d --restart unless-stopped -p 4222:4222 -p 8222:8222 -p 6222:6222 --name nats-server -ti nats:latest
 ```  
 Git
@@ -34,11 +35,6 @@ Git
 apt-get install git-core -y
 git clone https://github.com/volkovartem77/binlead_wss.git
 cd binlead_wss
-```
-
-### Create Docker network   
-```
-docker network create mynetwork
 ```
 
 ### Build the Docker image

@@ -27,7 +27,7 @@ chown redis:redis /var/lib/redis
 ```
 NATS
 ```
-sudo docker run -d --restart unless-stopped -p 4222:4222 -p 8222:8222 -p 6222:6222 --name nats-server -ti nats:latest
+sudo docker run --network mynetwork -d --restart unless-stopped -p 4222:4222 -p 8222:8222 -p 6222:6222 --name nats-server -ti nats:latest
 ```  
 Git
 ```
@@ -43,5 +43,5 @@ docker build -t websocket-server .
 
 ### Run the Docker container
 ```
-docker run -d -p 80:8080 websocket-server
+docker run --network mynetwork -d -p 80:8080 websocket-server
 ```

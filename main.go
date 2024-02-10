@@ -78,7 +78,7 @@ func initRedis() {
 
 func initNATS() {
 	var err error
-	natsConn, err = nats.Connect("nats://localhost:4222")
+	natsConn, err = nats.Connect("nats://nats-server:4222")
 	if err != nil {
 		log.Fatal("Failed to connect to NATS:", err)
 	}

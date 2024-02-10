@@ -1,0 +1,83 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.bin
+*.o
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+
+# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
+.glide/
+
+# Project-local vendor directory
+vendor/
+
+# Dependency directories (remove the comment below if you're not using Go modules)
+# /vendor/
+
+# Error directories
+_errors/
+
+# IntelliJ
+.idea/
+*.iml
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# macOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+Desktop.ini
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.a
+
+# Folders
+bin/
+obj/
+test_data/
+build/
+
+# Eclipse files
+.settings/
+.project
+.classpath
+
+# Golang specific
+*.log
+*.gz
+
+# Go build
+/go-build
+/go.sum
+
+# Go Land IDE
+
+# Go Coverage
+*.cover
+coverage.txt
+
+# Ginkgo Test Reports
+junit.xml
+
+# Godeps
+Godeps/
+
+# Temp files
+*.tmp
+*.temp
+*.swp
+*~
+
+# Vendor folder if you're not using it
+# /vendor/
+/go_build_binlead_wss_macos

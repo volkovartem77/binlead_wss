@@ -33,6 +33,7 @@ Git
 ```
 apt-get install git-core -y
 git clone https://github.com/volkovartem77/binlead_wss.git
+cd binlead_wss
 ```
 
 ### Build the Docker image

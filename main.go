@@ -67,9 +67,9 @@ type apiResponse struct {
 func initRedis() {
 	// Initialize Redis client
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // or your Redis server address
-		Password: "",               // no password set
-		DB:       0,                // use default DB
+		Addr:     "redis-server:6379", // or your Redis server address
+		Password: "",                  // no password set
+		DB:       0,                   // use default DB
 	})
 
 	// Ensure the traders set is empty at start

@@ -25,9 +25,12 @@ Redis
 apt-get install redis-server -y
 chown redis:redis /var/lib/redis
 ```
-NATS
+Create Docker network
 ```
 docker network create mynetwork
+```   
+NATS
+```
 sudo docker run --network mynetwork -d --restart unless-stopped -p 4222:4222 -p 8222:8222 -p 6222:6222 --name nats-server -ti nats:latest
 ```  
 Git

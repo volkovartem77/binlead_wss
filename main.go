@@ -185,8 +185,8 @@ func validateTraderRest(traderID string) bool {
 
 	// Check if the response contains non-nil data
 	if apiResp.Data != nil {
-		// Valid trader ID; add it to the Redis set "valid_trades:um"
-		_, err := rdb.SAdd(ctx, "valid_trades:um", traderID).Result()
+		// Valid trader ID; add it to the Redis set "valid_traders:um"
+		_, err := rdb.SAdd(ctx, "valid_traders:um", traderID).Result()
 		if err != nil {
 			log.Printf("Error adding trader ID to Redis: %v", err)
 		}
@@ -198,8 +198,8 @@ func validateTraderRest(traderID string) bool {
 }
 
 func validateTrader(conn *websocket.Conn, traderID string) bool {
-	// Check if the traderID exists in the Redis set 'valid_trades:um'
-	exists, err := rdb.SIsMember(ctx, "valid_trades:um", traderID).Result()
+	// Check if the traderID exists in the Redis set 'valid_traders:um'
+	exists, err := rdb.SIsMember(ctx, "valid_traders:um", traderID).Result()
 
 	if err != nil {
 		log.Printf("Error checking trader validity in Redis: %v", err)

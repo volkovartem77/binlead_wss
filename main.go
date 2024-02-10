@@ -428,7 +428,7 @@ func main() {
 	initRedis()
 	initNATS()
 	http.HandleFunc("/ws", handler)
-	log.Println("WebSocket server started on :8080")
+	log.Println("WebSocket server ready. Externally accessible on port 80 when run in Docker.")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}

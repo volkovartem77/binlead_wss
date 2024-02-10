@@ -43,5 +43,6 @@ docker build -t websocket-server .
 
 ### Run the Docker container
 ```
+docker network create mynetwork
 docker run --network mynetwork -d -p 80:8080 websocket-server
 ```

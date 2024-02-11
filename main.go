@@ -389,6 +389,7 @@ func updateSubscriptionsInRedisAndNATS(traderID string) {
 
 	// Subscribe to NATS channel
 	sub, err := natsConn.Subscribe(traderID, func(msg *nats.Msg) {
+		log.Printf("TEST sendUpdates %s: %v", traderID, msg.Data)
 		sendUpdates(traderID, msg.Data)
 	})
 	if err != nil {

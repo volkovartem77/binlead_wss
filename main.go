@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"sync"
 )
@@ -65,11 +66,15 @@ type apiResponse struct {
 }
 
 func initRedis() {
+	// Read REDIS_PASSWORD from environment variables
+	redisPassword := os.Getenv("REDIS_PASSWORD")
+
 	// Initialize Redis client
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "redis-server:6379", // or your Redis server address
-		Password: "",                  // no password set
-		DB:       0,                   // use default DB
+		Addr: "redis-server:6379", // or your Redis server address
+		//Addr:     "localhost:6379", // or your Redis server address
+		Password: redisPassword, // set password from environment variable
+		DB:       0,             // use default DB
 	})
 
 	// Ensure the traders set is empty at start
@@ -77,8 +82,12 @@ func initRedis() {
 }
 
 func initNATS() {
+	// Read NATS_PASSWORD from environment variables
+	natsPassword := os.Getenv("NATS_PASSWORD")
+	natsURL := fmt.Sprintf("nats://admin:%s@nats-server:4222", natsPassword)
+
 	var err error
-	natsConn, err = nats.Connect("nats://nats-server:4222")
+	natsConn, err = nats.Connect(natsURL)
 	if err != nil {
 		log.Fatal("Failed to connect to NATS:", err)
 	}

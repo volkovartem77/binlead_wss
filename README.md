@@ -7,14 +7,15 @@
 Git
 ```
 git clone https://github.com/volkovartem77/binlead_wss.git
+cd binlead_wss
 ```
 
 ### Build the Docker image
 ```
-docker build -t websocket-server .
+sudo docker build -t websocket-server .
 ```
 
 ### Run the Docker container
 ```
-docker run --network mynetwork -d -p 80:8080 -e REDIS_PASSWORD=yourRedisPassword -e NATS_PASSWORD=yourNatsPassword websocket-server
+sudo docker run --network mynetwork -d -p 80:8080 -e REDIS_PASSWORD=yourRedisPassword -e NATS_PASSWORD=yourNatsPassword websocket-server
 ```

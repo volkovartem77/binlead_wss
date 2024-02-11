@@ -436,9 +436,16 @@ func sendUpdates(traderID string, message []byte) {
 func main() {
 	initRedis()
 	initNATS()
+
 	http.HandleFunc("/ws", handler)
-	log.Println("WebSocket server ready. Externally accessible on port 80 when run in Docker.")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatal("ListenAndServe: ", err)
+	log.Println("WebSocket Secure server started on :443")
+
+	// Specify the paths to your certificate and private key files
+	certPath := "/etc/letsencrypt/live/leaderboardapi.net/fullchain.pem"
+	keyPath := "/etc/letsencrypt/live/leaderboardapi.net/privkey.pem"
+
+	// Use ListenAndServeTLS instead of ListenAndServe
+	if err := http.ListenAndServeTLS(":443", certPath, keyPath, nil); err != nil {
+		log.Fatal("ListenAndServeTLS: ", err)
 	}
 }

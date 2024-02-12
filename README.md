@@ -22,12 +22,23 @@ sudo docker run --network mynetwork -d -p 80:8080 -e REDIS_PASSWORD=yourRedisPas
 
 ### How to make daily restart using Cron
 
-#### Modify **restart_container.sh** to set relevant container_id
+#### 1. Edit the sudoers file
+```
+sudo visudo
+```
+
+#### 2. Add a NOPASSWD entry
 
 ```
-nano restart_container.sh
+ubuntu ALL=(ALL) NOPASSWD: /usr/bin/docker container restart 5a75150991d7
 ```
 
+#### 3. Open cron
 ```
-chmod +x restart_container.sh
+crontab -e
+```
+
+#### 4. Add the following line to schedule  
+```
+0 0 * * * TZ=UTC sudo /usr/bin/docker container restart 5a75150991d7
 ```

@@ -93,6 +93,25 @@ func initNATS() {
 	}
 }
 
+func initRedisTest() {
+	// Initialize Redis client
+	rdb = redis.NewClient(&redis.Options{
+		Addr: "localhost:6379", // or your Redis server address
+		DB:   0,                // use default DB
+	})
+
+	// Ensure the traders set is empty at start
+	rdb.Del(ctx, "traders:um")
+}
+
+func initNATSTest() {
+	var err error
+	natsConn, err = nats.Connect(nats.DefaultURL)
+	if err != nil {
+		log.Fatal("Failed to connect to NATS:", err)
+	}
+}
+
 func authenticate(tokenString string) (*Claims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil
@@ -125,9 +144,23 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Initialize the send channel for this connection
+	sendChannel := make(chan []byte, 256) // Adjust buffer size based on expected volume
+
+	// Start the goroutine for managing writes to this connection
+	go func(c *websocket.Conn, ch chan []byte) {
+		for message := range ch {
+			if err := c.WriteMessage(websocket.TextMessage, message); err != nil {
+				log.Printf("Error writing to websocket: %v", err)
+				break // Exit the goroutine if we can't write to the connection
+			}
+		}
+	}(conn, sendChannel)
+
 	log.Printf("User connected: %s (%s)\n", claims.Name, claims.UID)
 	defer func() {
 		unsubscribeUserFromAll(conn, claims.Name, claims.UID)
+		close(sendChannel)
 		log.Printf("User disconnected: %s (%s)\n", claims.Name, claims.UID)
 	}()
 
@@ -149,7 +182,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		switch msg.Action {
 		case "subscribe":
 			if validateTrader(conn, traderID) {
-				subscribeUserToTrader(conn, claims.Name, traderID, claims.UID, claims.Subs)
+				subscribeUserToTrader(conn, sendChannel, claims.Name, traderID, claims.UID, claims.Subs)
 			}
 		case "unsubscribe":
 			unsubscribeUserFromTrader(conn, claims.Name, traderID, claims.UID)
@@ -252,7 +285,7 @@ func sendSubscribeResponse(conn *websocket.Conn, traderID string, action string,
 	}
 }
 
-func subscribeUserToTrader(conn *websocket.Conn, userName string, traderID string, userID string, maxSubs int32) {
+func subscribeUserToTrader(conn *websocket.Conn, sendChannel chan []byte, userName string, traderID string, userID string, maxSubs int32) {
 	subscribedUsersMutex.Lock()
 	defer subscribedUsersMutex.Unlock()
 	userSubscriptionsMutex.Lock()
@@ -287,19 +320,6 @@ func subscribeUserToTrader(conn *websocket.Conn, userName string, traderID strin
 	if !alreadySubscribed {
 		userSubscriptions[userID] = currentSubs + 1
 
-		// Initialize the send channel for this subscriber if not already subscribed
-		sendChannel := make(chan []byte, 256) // Adjust buffer size based on expected volume
-
-		// Start the goroutine for managing writes to this connection
-		go func(c *websocket.Conn, ch chan []byte) {
-			for message := range ch {
-				if err := c.WriteMessage(websocket.TextMessage, message); err != nil {
-					log.Printf("Error writing to websocket: %v", err)
-					break // Exit the goroutine if we can't write to the connection
-				}
-			}
-		}(conn, sendChannel)
-
 		// Append the new subscriber with the connection and send channel
 		subscribers = append(subscribers, subscriber{conn, sendChannel})
 		subscribedUsers[traderID] = subscribers
@@ -326,7 +346,6 @@ func unsubscribeUserFromTrader(conn *websocket.Conn, userName string, traderID s
 
 	for i, subscriber := range subscribers {
 		if subscriber.conn == conn {
-			close(subscriber.send) // Close the send channel to stop the goroutine
 			subscribers = append(subscribers[:i], subscribers[i+1:]...)
 			// Decrease the user's subscription count
 			currentSubs, _ := userSubscriptions[userID]
@@ -355,7 +374,6 @@ func unsubscribeUserFromAll(conn *websocket.Conn, userName string, userID string
 	for traderID, subscribers := range subscribedUsers {
 		for i, subscriber := range subscribers {
 			if subscriber.conn == conn {
-				close(subscriber.send) // Close the send channel to stop the goroutine
 				subscribers = append(subscribers[:i], subscribers[i+1:]...)
 				log.Printf("User %s unsubscribed from %s", userName, traderID)
 
@@ -450,3 +468,16 @@ func main() {
 		log.Fatal("ListenAndServeTLS: ", err)
 	}
 }
+
+//func main() {
+//	initRedisTest()
+//	initNATSTest()
+//
+//	http.HandleFunc("/ws", handler)
+//	log.Println("WebSocket Secure server started on :443")
+//
+//	log.Println("Starting HTTP server on port 80")
+//	if err := http.ListenAndServe(":80", nil); err != nil {
+//		log.Fatal("ListenAndServe: ", err)
+//	}
+//}

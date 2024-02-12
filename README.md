@@ -19,3 +19,15 @@ sudo docker build -t websocket-server .
 ```
 sudo docker run --network mynetwork -d -p 80:8080 -e REDIS_PASSWORD=yourRedisPassword -e NATS_PASSWORD=yourNatsPassword websocket-server
 ```
+
+### How to make daily restart using Cron
+
+#### Modify **restart_container.sh** to set relevant container_id
+
+```
+nano restart_container.sh
+```
+
+```
+chmod +x restart_container.sh
+```

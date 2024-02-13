@@ -15,7 +15,7 @@ cd binlead_wss
 ```
 sudo docker run --name nginx-proxy --network mynetwork -d -p 80:80 -p 443:443 \
     -v /home/ubuntu/binlead_wss/nginx.conf:/etc/nginx/nginx.conf \
-    -v /home/ubuntu/certs:/etc/ssl/certs \
+    -v /etc/letsencrypt:/etc/letsencrypt \
     nginx
 ```
 

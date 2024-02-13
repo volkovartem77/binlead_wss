@@ -3,11 +3,20 @@
 
 > AWS EC2 2CPU/4RAM (t3.medium)
 
+
 ### Git clone
 Git
 ```
 git clone https://github.com/volkovartem77/binlead_wss.git
 cd binlead_wss
+```
+
+### Install and configure NGINX
+```
+sudo docker run --name nginx-proxy --network mynetwork -d -p 80:80 -p 443:443 \
+    -v /home/ubuntu/binlead_wss/nginx.conf:/etc/nginx/nginx.conf \
+    -v /home/ubuntu/certs:/etc/ssl/certs \
+    nginx
 ```
 
 ### Build the Docker image

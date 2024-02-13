@@ -68,7 +68,7 @@ type apiResponse struct {
 func initRedis() {
 	// Read REDIS_PASSWORD from environment variables
 	redisPassword := os.Getenv("REDIS_PASSWORD")
-	log.Printf("REDIS_PASSWORD: %s", redisPassword)
+	//log.Printf("REDIS_PASSWORD: %s", redisPassword)
 
 	// Initialize Redis client
 	rdb = redis.NewClient(&redis.Options{
@@ -84,7 +84,7 @@ func initRedis() {
 func initNATS() {
 	// Read NATS_PASSWORD from environment variables
 	natsPassword := os.Getenv("NATS_PASSWORD")
-	log.Printf("NATS_PASSWORD: %s", natsPassword)
+	//log.Printf("NATS_PASSWORD: %s", natsPassword)
 	natsURL := fmt.Sprintf("nats://admin:%s@nats-server:4222", natsPassword)
 
 	var err error

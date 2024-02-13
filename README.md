@@ -11,20 +11,15 @@ git clone https://github.com/volkovartem77/binlead_wss.git
 cd binlead_wss
 ```
 
-### Set Env
+### Set ENVIRONMENT VARIABLES
 ```
 export REDIS_PASSWORD="^6D3or54g%7+Wze4{?TSC5sF"
 export NATS_PASSWORD="sOJV1JRVeS3uN5rz5Z0S5Bmp"
 ```
 
-### Build the Docker image
-```
-sudo docker compose up --build
-```
-
 ### Run the Docker container
 ```
-sudo docker compose up --build -d
+sudo -E docker compose up --build -d
 ```
 
 ### How to make daily restart using Cron

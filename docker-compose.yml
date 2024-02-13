@@ -6,6 +6,7 @@ services:
     environment:
       REDIS_PASSWORD: "${REDIS_PASSWORD}"
       NATS_PASSWORD: "${NATS_PASSWORD}"
+      SECRET_KEY: "${SECRET_KEY}"
     networks:
       - mynetwork
 

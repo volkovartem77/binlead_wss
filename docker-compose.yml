@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  websocket-server:
+    build: .
+    container_name: websocket-server
+    environment:
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+      NATS_PASSWORD: "${NATS_PASSWORD}"
+    networks:
+      - mynetwork
+
+  nginx-proxy:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /home/ubuntu/binlead_wss/nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /home/ubuntu/binlead_wss/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - websocket-server
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

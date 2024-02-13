@@ -24,7 +24,7 @@ sudo docker compose up --build
 
 ### Run the Docker container
 ```
-sudo docker compose up --build
+sudo docker compose up --build -d
 ```
 
 ### How to make daily restart using Cron

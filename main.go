@@ -84,6 +84,7 @@ func initRedis() {
 func initNATS() {
 	// Read NATS_PASSWORD from environment variables
 	natsPassword := os.Getenv("NATS_PASSWORD")
+	log.Printf(natsPassword)
 	natsURL := fmt.Sprintf("nats://admin:%s@nats-server:4222", natsPassword)
 
 	var err error

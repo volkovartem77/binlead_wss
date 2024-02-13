@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	secretKey = []byte("af0660f986d713761085f8ded052f25f")
+	secretKey = []byte(os.Getenv("SECRET_KEY"))
 	upgrader  = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,

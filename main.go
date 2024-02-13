@@ -457,17 +457,29 @@ func main() {
 	initNATS()
 
 	http.HandleFunc("/ws", handler)
-	log.Println("WebSocket Secure server started on :443")
+	log.Println("WebSocket server started on :8080")
 
-	// Specify the paths to your certificate and private key files
-	certPath := "/etc/letsencrypt/live/leaderboardapi.net/fullchain.pem"
-	keyPath := "/etc/letsencrypt/live/leaderboardapi.net/privkey.pem"
-
-	// Use ListenAndServeTLS instead of ListenAndServe
-	if err := http.ListenAndServeTLS(":443", certPath, keyPath, nil); err != nil {
-		log.Fatal("ListenAndServeTLS: ", err)
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal("ListenAndServe: ", err)
 	}
 }
+
+//func main() {
+//	initRedis()
+//	initNATS()
+//
+//	http.HandleFunc("/ws", handler)
+//	log.Println("WebSocket Secure server started on :443")
+//
+//	// Specify the paths to your certificate and private key files
+//	certPath := "/etc/letsencrypt/live/leaderboardapi.net/fullchain.pem"
+//	keyPath := "/etc/letsencrypt/live/leaderboardapi.net/privkey.pem"
+//
+//	// Use ListenAndServeTLS instead of ListenAndServe
+//	if err := http.ListenAndServeTLS(":443", certPath, keyPath, nil); err != nil {
+//		log.Fatal("ListenAndServeTLS: ", err)
+//	}
+//}
 
 //func main() {
 //	initRedisTest()

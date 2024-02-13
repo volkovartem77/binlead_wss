@@ -71,10 +71,9 @@ func initRedis() {
 
 	// Initialize Redis client
 	rdb = redis.NewClient(&redis.Options{
-		Addr: "redis-server:6379", // or your Redis server address
-		//Addr:     "localhost:6379", // or your Redis server address
-		Password: redisPassword, // set password from environment variable
-		DB:       0,             // use default DB
+		Addr:     "redis-server:6379", // or your Redis server address
+		Password: redisPassword,       // set password from environment variable
+		DB:       0,                   // use default DB
 	})
 
 	// Ensure the traders set is empty at start
@@ -84,7 +83,6 @@ func initRedis() {
 func initNATS() {
 	// Read NATS_PASSWORD from environment variables
 	natsPassword := os.Getenv("NATS_PASSWORD")
-	log.Printf(natsPassword)
 	natsURL := fmt.Sprintf("nats://admin:%s@nats-server:4222", natsPassword)
 
 	var err error

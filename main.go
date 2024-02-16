@@ -442,13 +442,19 @@ func removeFromRedisAndNATS(traderID string) {
 }
 
 func sendUpdates(traderID string, message []byte) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("Recovered in sendUpdates: %v", r)
+		}
+	}()
+
 	subscribedUsersMutex.RLock()
 	subscribers, ok := subscribedUsers[traderID]
 	subscribedUsersMutex.RUnlock()
 
 	if ok {
 		for _, sub := range subscribers {
-			sub.send <- message // Send the message to the subscriber's send channel
+			sub.send <- message
 		}
 	}
 }

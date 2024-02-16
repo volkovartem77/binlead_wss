@@ -33,7 +33,7 @@ sudo visudo
 #### 2. Add a NOPASSWD entry
 
 ```
-ubuntu ALL=(ALL) NOPASSWD: /usr/bin/docker container restart 5a75150991d7
+ubuntu ALL=(ALL) NOPASSWD: /usr/bin/docker container restart <ws_server_container_id>
 ```
 
 #### 3. Open cron
@@ -43,5 +43,10 @@ crontab -e
 
 #### 4. Add the following line to schedule  
 ```
-0 0 * * * TZ=UTC sudo /usr/bin/docker container restart 5a75150991d7
+0 0 * * * TZ=UTC sudo /usr/bin/docker container restart <ws_server_container_id>
+```
+
+### Clean command line history
+```
+history -c; rm ~/.bash_history
 ```
